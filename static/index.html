@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Translator</title>
+  <!-- Link to custom stylesheet for modern UI styling -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Voice Translator</h1>
+    <div class="buttons">
+      <button id="startBtn" class="btn">Start Recording</button>
+      <button id="stopBtn" class="btn" disabled>Stop Recording</button>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <h3>Speech Transcription</h3>
+        <textarea id="transcription" placeholder="Transcribed text will appear here..."></textarea>
+      </div>
+      <div class="panel">
+        <h3>Translation</h3>
+        <textarea id="translation" readonly placeholder="Translated text will appear here and copied to clipboard..."></textarea>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+  <!-- Attempt to open the UI in a new fixed-size window -->
+  <script>
+    window.onload = function() {
+      window.resizeTo(600, 700);
+      window.moveTo((screen.width - window.innerWidth), (screen.height - window.innerHeight));
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Dependencies for Voice One-Way Translation App
+sounddevice>=0.4.5
+websockets>=10.3
+pyttsx3>=2.90
+fastapi>=0.95.2
+uvicorn>=0.22.0
+openai>=0.27.0
+python-multipart>=0.0.6
