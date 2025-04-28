@@ -57,10 +57,20 @@ async def translate_audio(
     except Exception as e:
         logger.exception("Failed to transcribe audio")
         raise HTTPException(status_code=500, detail=f"Transcription error: {e}")
+
+
     # Translate the transcript to English using GPT-4 mini
     try:
+        system_prompt = """You are a highly skilled translator. Your task is to accurately translate user input from Russian to English or English to Russian, depending on the input language.
+
+Your translation must:
+- Preserve the original meaning as closely as possible
+- Maintain the original tone and intonation
+- Accurately convey idiomatic expressions and cultural nuances
+
+Provide only the translated text in your output, without any additional comments, explanations, or clarifications. Respond strictly with the translation."""
         messages = [
-            {"role": "system", "content": "Translate the following text to English. Respond only with the translation."},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": transcript},
         ]
         chat_resp = openai.chat.completions.create(
@@ -84,11 +94,20 @@ async def translate_text(request: TextTranslateRequest):
     Translate arbitrary text to English using GPT-4 Mini
     """
     transcript = request.text
+
+    system_prompt = """You are a highly skilled translator. Your task is to accurately translate user input from Russian to English or English to Russian, depending on the input language.
+
+Your translation must:
+- Preserve the original meaning as closely as possible
+- Maintain the original tone and intonation
+- Accurately convey idiomatic expressions and cultural nuances
+
+Provide only the translated text in your output, without any additional comments, explanations, or clarifications. Respond strictly with the translation."""
     try:
         chat_resp = openai.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "Translate the following text to English. Respond only with the translation."},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": transcript},
             ],
             temperature=0.3,
