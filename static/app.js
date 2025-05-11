@@ -6,10 +6,12 @@ const translationField = document.getElementById('translation');
 
 let mediaRecorder;
 let audioChunks = [];
+let lastTranscriptionValue = '';
 
 startBtn.addEventListener('click', async () => {
   transcriptionField.value = '';
   translationField.value = '';
+  lastTranscriptionValue = '';
   audioChunks = [];
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -36,6 +38,8 @@ startBtn.addEventListener('click', async () => {
         const data = await response.json();
         transcriptionField.value = data.transcription || '';
         translationField.value = data.translation || '';
+
+        lastTranscriptionValue = data.transcription || '';
         if (data.translation) {
           try {
             await navigator.clipboard.writeText(data.translation);
@@ -72,6 +76,12 @@ transcriptionField.addEventListener('blur', async () => {
     transcriptionField.removeAttribute('redone');
     return;
   }
+
+  if (text === lastTranscriptionValue) {
+    transcriptionField.removeAttribute('redone');
+    return;
+  }
+
   try {
     const response = await fetch('/api/translate_text', {
       method: 'POST',
@@ -83,6 +93,8 @@ transcriptionField.addEventListener('blur', async () => {
     } else {
       const data = await response.json();
       translationField.value = data.translation || '';
+      lastTranscriptionValue = text;
+
       if (data.translation) {
         try {
           await navigator.clipboard.writeText(data.translation);

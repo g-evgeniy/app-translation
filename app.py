@@ -4,6 +4,7 @@ FastAPI server for Voice Translation Web Interface
 import os
 import io
 import logging
+import re
 
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -94,6 +95,10 @@ async def translate_text(request: TextTranslateRequest):
     Translate arbitrary text to English using GPT-4 Mini
     """
     transcript = request.text
+
+    import re
+    if not re.search('[a-zA-Zа-яА-Я]', transcript):
+        return {"translation": transcript}
 
     system_prompt = """You are a highly skilled translator. Your task is to accurately translate user input from Russian to English or English to Russian, depending on the input language.
 
