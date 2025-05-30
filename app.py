@@ -51,7 +51,8 @@ async def translate_audio(
         audio_buffer.name = "recording.webm"
         transcription_resp = openai.audio.transcriptions.create(
             model="whisper-1",
-            file=audio_buffer
+            file=audio_buffer,
+            prompt="Здравствуйте, добро пожаловать на мою лекцию",
         )
         # The response has a .text attribute with the transcript
         transcript = transcription_resp.text
